@@ -1,7 +1,6 @@
 package com.example.plugins
 
 import io.ktor.server.websocket.*
-import io.ktor.websocket.*
 import java.time.Duration
 import io.ktor.server.application.*
 
@@ -11,7 +10,5 @@ fun Application.configureSockets() {
         timeout = Duration.ofSeconds(15)
         maxFrameSize = Long.MAX_VALUE
         masking = false
-    }
-    routing {
     }
 }

@@ -1,6 +1,6 @@
 package com.example.plugins
 
-import io.ktor.network.sockets.*
+import com.example.*
 import io.ktor.server.websocket.*
 import java.time.Duration
 import io.ktor.server.application.*
@@ -18,6 +18,8 @@ fun Application.configureSockets() {
     routing {
         val connections = Collections.synchronizedSet<Connection?>(LinkedHashSet())
         webSocket("/chat") {
+            println("Adding user!")
+            val thisConnection = Connection(this)
             send("You are connected!")
             for(frame in incoming) {
                 frame as? Frame.Text ?: continue

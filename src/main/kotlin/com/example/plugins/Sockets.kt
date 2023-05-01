@@ -31,6 +31,14 @@ fun Application.configureSockets() {
                 for(frame in incoming) {
                     frame as? Frame.Text ?: continue
                     val receivedText = frame.readText()
+                    if(receivedText.first() == '/') {
+                        if(receivedText.takeWhile { it != ' ' } == "/whisper") {
+                            send("Valid Command")
+                        } else {
+                            send("Command Not Supported.")
+                            continue
+                        }
+                    }
                     val textWithUsername = "[${name}]: $receivedText"
                     connections.forEach {
                         it.session.send(textWithUsername)

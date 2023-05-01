@@ -24,10 +24,14 @@ fun Application.configureSockets() {
             connections += thisConnection
             try {
                 send("You are connected! There are ${connections.count()} users here.")
+                send("Please enter your name.")
+                val nameFrame = incoming.receive() as? Frame.Text
+                val name = nameFrame?.readText()
+                send("Welcome, $name!")
                 for(frame in incoming) {
                     frame as? Frame.Text ?: continue
                     val receivedText = frame.readText()
-                    val textWithUsername = "[${thisConnection.name}]: $receivedText"
+                    val textWithUsername = "[${name}]: $receivedText"
                     connections.forEach {
                         it.session.send(textWithUsername)
                     }

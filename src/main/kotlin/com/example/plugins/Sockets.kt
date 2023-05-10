@@ -26,22 +26,22 @@ fun Application.configureSockets() {
                 send("You are connected! There are ${connections.count()} users here.")
                 send("Please enter your name.")
                 val nameFrame = incoming.receive() as? Frame.Text
-                val name = nameFrame?.readText() ?: thisConnection.name
+                thisConnection.name = nameFrame?.readText() ?: thisConnection.name
                 connections.forEach {
-                    it.session.send("$name joined!")
+                    it.session.send("${thisConnection.name} joined!")
                 }
                 for(frame in incoming) {
                     frame as? Frame.Text ?: continue
                     val receivedText = frame.readText()
                     if(receivedText.first() == '/') {
                         if(receivedText.takeWhile { it != ' ' } == "/whisper") {
-                            send("Valid Command")
+                            send("Valid command")
                         } else {
                             send("Command Not Supported.")
                             continue
                         }
                     }
-                    val textWithUsername = "[${name}]: $receivedText"
+                    val textWithUsername = "[${thisConnection.name}]: $receivedText"
                     connections.forEach {
                         it.session.send(textWithUsername)
                     }

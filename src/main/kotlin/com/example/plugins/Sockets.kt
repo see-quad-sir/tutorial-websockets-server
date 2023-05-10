@@ -27,7 +27,9 @@ fun Application.configureSockets() {
                 send("Please enter your name.")
                 val nameFrame = incoming.receive() as? Frame.Text
                 val name = nameFrame?.readText() ?: thisConnection.name
-                send("Welcome, $name!")
+                connections.forEach {
+                    it.session.send("$name joined!")
+                }
                 for(frame in incoming) {
                     frame as? Frame.Text ?: continue
                     val receivedText = frame.readText()
